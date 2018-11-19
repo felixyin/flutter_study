@@ -39,44 +39,48 @@ class _MyAppState extends State<MyApp> {
 
 class TwoPage extends MaterialPageRoute<Null> {
   TwoPage()
-      : super(builder: (context) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('TwoPage'),
-            ),
-            body: Container(
-              padding: EdgeInsets.all(8.0),
-              child: Center(
-                  child: RaisedButton(
-                onPressed: () {
-                  Navigator.of(context).push(ThreePage());
-                },
-                child: Text('Go Three Page'),
-              )),
-            ),
-          );
-        });
+      : super(
+          builder: (context) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('TwoPage'),
+              ),
+              body: Container(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                    child: RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(ThreePage());
+                  },
+                  child: Text('Go Three Page'),
+                )),
+              ),
+            );
+          },
+        );
 }
 
 class ThreePage extends MaterialPageRoute<Null> {
   ThreePage()
-      : super(builder: (context) {
-          return Scaffold(
-            appBar: AppBar(
-              title: Text('ThreePage'),
-            ),
-            body: Container(
-              padding: EdgeInsets.all(8.0),
-              child: Center(
-                child: RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context).popUntil(
-                        ModalRoute.withName(Navigator.defaultRouteName));
-                  },
-                  child: Text('Go Home Page'),
+      : super(
+          builder: (context) {
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('ThreePage'),
+              ),
+              body: Container(
+                padding: EdgeInsets.all(8.0),
+                child: Center(
+                  child: RaisedButton(
+                    onPressed: () {
+                      Navigator.of(context).popUntil(
+                          ModalRoute.withName(Navigator.defaultRouteName));
+                    },
+                    child: Text('Go Home Page'),
+                  ),
                 ),
               ),
-            ),
-          );
-        });
+            );
+          },
+        );
 }
