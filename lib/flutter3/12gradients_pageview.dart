@@ -23,7 +23,7 @@ class _MyAppState extends State<MyApp> {
         title: Text('Gradients PageView'),
       ),
       body: Container(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(0.0),
         child: SizedBox.fromSize(
           size: Size.fromHeight(500),
           child: PageView.builder(

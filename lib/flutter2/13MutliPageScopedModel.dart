@@ -63,8 +63,11 @@ class HomePage extends StatelessWidget {
       ),
       body: Container(
         padding: EdgeInsets.all(8.0),
-        child: Center(
+        child: SingleChildScrollView(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               TextField(
                 controller: _controller,
@@ -86,6 +89,7 @@ class HomePage extends StatelessWidget {
                 onPressed: () => Navigator.of(context).pushNamed('/List'),
                 child: Text('查看列表'),
               ),
+
             ],
           ),
         ),
