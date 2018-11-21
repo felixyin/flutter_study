@@ -101,7 +101,7 @@ class CalBtn extends StatelessWidget {
         color: Colors.white,
         shape: Border.all(
           color: Colors.grey.withOpacity(0.5),
-          width: .0,
+          width: 1.0,
           style: BorderStyle.solid,
         ),
         child: Text(
