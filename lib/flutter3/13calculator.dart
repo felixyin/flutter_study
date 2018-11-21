@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'dart:math' as math;
 
+///
+/// 一个功能Î比较完整的计算器例子
+///
 void main() => runApp(MaterialApp(
       home: MyApp(),
     ));
