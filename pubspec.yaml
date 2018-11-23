@@ -23,6 +23,11 @@ dependencies:
   cached_network_image: ^0.5.0+1
   transparent_image: ^0.1.0
   english_words: ^3.1.4
+  shared_preferences: ^0.4.3
+  url_launcher: ^4.0.1
+  flutter_webview_plugin: ^0.3.0+2
+  sqflite: ^0.12.2+1
+  rxdart: ^0.19.0
 
 dev_dependencies:
   flutter_test:

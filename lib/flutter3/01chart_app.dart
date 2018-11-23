@@ -23,8 +23,7 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme:
-          defaultTargetPlatform == TargetPlatform.iOS ? iosTheme : androidTheme,
+      theme: defaultTargetPlatform == TargetPlatform.iOS ? iosTheme : androidTheme,
       home: ChatApp(),
     );
   }
@@ -92,7 +91,8 @@ class ChatWin extends State<ChatApp> with TickerProviderStateMixin {
                   });
                 },
                 onSubmitted: _onSubmitMsg, // enter
-                decoration: InputDecoration.collapsed(hintText: '请输入消息...'),
+                // 修改完毕，保存后，实时预览
+                decoration: InputDecoration.collapsed(hintText: 'type something in here...'),
               ),
             ),
             Container(
@@ -100,15 +100,11 @@ class ChatWin extends State<ChatApp> with TickerProviderStateMixin {
               child: Theme.of(context).platform == TargetPlatform.iOS
                   ? CupertinoButton(
                       child: Text('发送'),
-                      onPressed: _isWriting
-                          ? () => _onSubmitMsg(_controller.text)
-                          : null,
+                      onPressed: _isWriting ? () => _onSubmitMsg(_controller.text) : null,
                     )
                   : IconButton(
                       icon: Icon(Icons.send),
-                      onPressed: _isWriting
-                          ? () => _onSubmitMsg(_controller.text)
-                          : null,
+                      onPressed: _isWriting ? () => _onSubmitMsg(_controller.text) : null,
                     ),
             ),
           ],
@@ -164,8 +160,7 @@ class MsgRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizeTransition(
-      sizeFactor: CurvedAnimation(
-          curve: Curves.elasticOut, parent: animationController),
+      sizeFactor: CurvedAnimation(curve: Curves.elasticOut, parent: animationController),
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10.0),
         child: Row(
@@ -182,8 +177,7 @@ class MsgRow extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(defaultUserName,
-                      style: Theme.of(context).textTheme.subhead),
+                  Text(defaultUserName, style: Theme.of(context).textTheme.subhead),
                   Container(
                     margin: EdgeInsets.only(top: 6.0),
                     child: Text(msg),
