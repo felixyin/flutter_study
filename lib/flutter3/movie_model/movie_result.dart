@@ -81,4 +81,12 @@ class MovieResult {
     data['favored'] = this.favored;
     return data;
   }
+
+  MovieResult.fromDB(Map<String, dynamic> map) {
+    id = map['id'];
+    title = map['title'];
+    posterPath = map['poster_path'];
+    overview = map['overview'];
+    favored = map['favored'] == 1 ? true : false;
+  }
 }

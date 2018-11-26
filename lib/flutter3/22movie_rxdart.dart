@@ -162,22 +162,21 @@ class _MovieViewState extends State<MovieView> {
       leading: IconButton(
         icon: _movie.favored == true ? Icon(Icons.star) : Icon(Icons.star_border),
         onPressed: () {
-          setState(() {
-            _movie.favored = !_movie.favored;
-          });
-          if (_movie.favored) {
-            _db.addMovie(_movie);
-          } else {
-            _db.removeMovie(_movie.id);
-          }
+          setState(() => _movie.favored = !_movie.favored);
+          _movie.favored == true ? _db.addMovie(_movie) : _db.removeMovie(_movie.id);
         },
       ),
       children: <Widget>[
         Container(
           padding: EdgeInsets.all(5.0),
-          child: Text(
-            _movie.overview,
-            style: TextStyle(fontSize: 16),
+          child: RichText(
+            text: TextSpan(
+              text: _movie.overview,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
           ),
         )
       ],
@@ -235,30 +234,46 @@ class MovieDatabase {
 
   FutureOr _onCreate(Database db, int version) async {
     await db.execute(
-        'CREATE TABLE Movie(id num PRIMARY KEY, title TEXT, poster_path TEXT, overview TEXT, favored BIT)');
+        'CREATE TABLE Movie(id STRING PRIMARY KEY, title TEXT, poster_path TEXT, overview TEXT, favored BIT)');
     print('====> DB created!');
   }
 
-  Future<int> addMovie(MovieResult movieResult) async {
+  Future<bool> isMovieSaved(int id) async {
     Database d = await db;
-    Future<int> count = d.insert('Movie', movieResult.toMap());
-    return count;
+    List list = await d.query('Movie', where: 'id=?', whereArgs: [id]);
+    print('isMovieSaved =========================> $list');
+    return list != null && list.length == 1;
+  }
+
+  Future<int> addMovie(MovieResult movieResult) async {
+    if (await isMovieSaved(movieResult.id)) {
+      Database d = await db;
+      int count = await d.insert('Movie', movieResult.toMap());
+      print('insert =========================> $count');
+      return count;
+    } else {
+      return updateMovie(movieResult, movieResult.id);
+    }
   }
 
   Future<int> updateMovie(MovieResult movieResult, int id) async {
     Database d = await db;
-    Future<int> count = d.update('Movie', movieResult.toMap(), where: 'id=?', whereArgs: [id]);
+    Map<String, dynamic> map = movieResult.toMap();
+    map.remove('id');
+    int count = await d.update('Movie', map, where: 'id=?', whereArgs: [id]);
+    print('update =========================> $id $count');
     return count;
   }
 
   Future<int> removeMovie(int id) async {
     Database d = await db;
-    Future<int> count = d.delete('Movie', where: 'id=?', whereArgs: [id]);
+    int count = await d.delete('Movie', where: 'id=?', whereArgs: [id]);
+    print('count =========================> $count');
     return count;
   }
 
   Future closeDB() async {
     Database d = await db;
-    return d.close();
+    return await d.close();
   }
 }
