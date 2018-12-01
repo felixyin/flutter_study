@@ -14,7 +14,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScopedModel<ItemModel>(
       child: MaterialApp(
-        theme: ThemeData.fallback(),
+        theme: ThemeData.dark(),
         home: HomePage(),
         routes: <String, WidgetBuilder>{
           HomePage.route: (_) => HomePage(),

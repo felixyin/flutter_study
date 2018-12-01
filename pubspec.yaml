@@ -41,6 +41,11 @@ dependencies:
   rx_widgets: ^2.2.0
   video_player: ^0.7.2
   flutter_i18n: ^0.5.0
+  dartea: ^0.6.1
+  shaded_text:
+    path: ../shaded_text
+  example_plugin:
+    path: ../example_plugin
 
 dev_dependencies:
   build_runner: ^1.1.2
@@ -92,3 +97,17 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
+  fonts: 
+  - family: SnackerComic
+    fonts: 
+      - asset: assets/fonts/3270Narrow.ttf
+
+  - family: FiraCode
+    fonts:
+      - asset: assets/fonts/Monofur for Powerline.ttf
+      - asset: assets/fonts/Monofur Bold for Powerline.ttf
+        weight: 900
+      - asset: assets/fonts/Monofur Bold for Powerline.ttf
+        weight: 400
+      - asset: assets/fonts/Monofur Italic for Powerline.ttf
+        style: italic

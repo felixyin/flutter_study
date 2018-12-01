@@ -145,7 +145,8 @@ List<Photo> parseJson(String respBody) {
 class MockRepo extends PhotoRepo {
   @override
   Future<List<Photo>> fetchPhotos(http.Client client) {
-    // 线程通讯 compute，开启一个新的线程执行
+    /// TODO 线程通讯 compute，开启一个新的线程执行
+    /// 在某个操作需要执行大量的计算或者io操作的时候，可能会影响界面流畅度，所以需要另开一个“线程”处理这部分任务
     return compute(createPhotos, 400);
   }
 }
