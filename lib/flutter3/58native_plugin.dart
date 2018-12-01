@@ -1,4 +1,6 @@
 import 'example_plugin.dart';
+import 'dart:async';
+import 'package:flutter/services.dart';
 
 import 'package:flutter/material.dart';
 
@@ -14,6 +16,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _versionStr = '';
   String _randomStr = '';
+  int _timer = 0;
 
   @override
   void initState() {
@@ -24,7 +27,7 @@ class _MyAppState extends State<MyApp> {
   void _initPlatformState() {
     ExamplePlugin.platformVersion.then((v) {
       // 要显示到的组件，可能会被异步的方法给删除掉
-      if (!mounted) return; 
+      if (!mounted) return;
       setState(() {
         _versionStr = v;
       });
@@ -51,9 +54,20 @@ class _MyAppState extends State<MyApp> {
             children: <Widget>[
               Text(_versionStr),
               Text(_randomStr),
+              Text(_timer.toString()),
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ExamplePlugin.callTimer((MethodCall call) {
+            setState(() {
+              _timer = (call.arguments as int);
+            });
+          });
+        },
+        child: Icon(Icons.timer),
       ),
     );
   }
