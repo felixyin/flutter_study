@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_redux_dev_tools/flutter_redux_dev_tools.dart';
+import 'package:redux_dev_tools/redux_dev_tools.dart';
 import 'model.dart';
 import 'actions.dart';
 import 'reduceres.dart';
+import 'middleware.dart';
 
 void main() => runApp(new MyApp());
 
@@ -14,15 +17,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Store<AppState> store = Store<AppState>(
+    final DevToolsStore<AppState> store = DevToolsStore<AppState>(
       appStateReducer,
       initialState: AppState.initState(),
+      middleware: appStateMiddleware(),
+      distinct: true,
     );
 
     return StoreProvider<AppState>(
       child: MaterialApp(
-        theme: ThemeData.dark(),
-        home: HomePage(),
+        // theme: ThemeData.dark(),
+        home: StoreBuilder<AppState>(
+          onInit: (store) => store.dispatch(GetItemsAction()),
+          builder: (BuildContext context, Store<AppState> vm) => HomePage(
+                store: vm,
+              ),
+        ),
       ),
       store: store,
     );
@@ -30,9 +40,17 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
+  final DevToolsStore<AppState> store;
+
+  const HomePage({Key key, this.store}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Container(
+        // color: Colors.blueAccent,
+        child: ReduxDevTools<AppState>(store),
+      ),
       appBar: AppBar(
         title: Text('Redux TODO'),
       ),
@@ -88,6 +106,12 @@ class _ItemListWidgetState extends State<ItemListWidget> {
   }
 
   ListTile _buildItem(Item item) => ListTile(
+        leading: Checkbox(
+          value: item.completed,
+          onChanged: (b) {
+            widget.vm.onCompleted(item);
+          },
+        ),
         title: Text(item.body),
         trailing: IconButton(
           onPressed: () {
@@ -120,7 +144,7 @@ class _AddItemWidgetState extends State<AddItemWidget> {
 }
 
 class _ViewModel {
-  _ViewModel({this.items, this.onAddItem, this.onRemoveItem, this.onRemoveItems});
+  _ViewModel({this.items, this.onAddItem, this.onRemoveItem, this.onRemoveItems, this.onCompleted});
 
   factory _ViewModel.create(Store<AppState> store) {
     _onAddItem(String body) {
@@ -135,11 +159,16 @@ class _ViewModel {
       store.dispatch(RemoveItemsAction());
     }
 
+    _onCompleted(Item item) {
+      store.dispatch(ItemCompletedAction(item));
+    }
+
     return _ViewModel(
       items: store.state.items,
       onAddItem: _onAddItem,
       onRemoveItem: _onRemoveItem,
       onRemoveItems: _onRemoveItems,
+      onCompleted: _onCompleted,
     );
   }
 
@@ -150,4 +179,6 @@ class _ViewModel {
   final Function(Item item) onRemoveItem;
 
   final Function() onRemoveItems;
+
+  final Function(Item item) onCompleted;
 }
