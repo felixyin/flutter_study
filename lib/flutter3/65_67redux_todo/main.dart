@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     final DevToolsStore<AppState> store = DevToolsStore<AppState>(
       appStateReducer,
       initialState: AppState.initState(),
@@ -59,9 +60,7 @@ class HomePage extends StatelessWidget {
         builder: (BuildContext context, _ViewModel vm) {
           return Column(
             children: <Widget>[
-              AddItemWidget(
-                vm: vm,
-              ),
+              AddItemWidget(vm: vm),
               Expanded(child: ItemListWidget(vm: vm)),
               RemoveItemsButton(vm: vm),
             ],
@@ -164,12 +163,11 @@ class _ViewModel {
     }
 
     return _ViewModel(
-      items: store.state.items,
-      onAddItem: _onAddItem,
-      onRemoveItem: _onRemoveItem,
-      onRemoveItems: _onRemoveItems,
-      onCompleted: _onCompleted,
-    );
+        items: store.state.items,
+        onAddItem: _onAddItem,
+        onRemoveItem: _onRemoveItem,
+        onRemoveItems: _onRemoveItems,
+        onCompleted: _onCompleted);
   }
 
   final List<Item> items;

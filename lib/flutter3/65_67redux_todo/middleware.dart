@@ -8,7 +8,7 @@ import 'dart:convert';
 List<Middleware<AppState>> appStateMiddleware([
   AppState state,
 ]) {
-  state = AppState(items: []);
+  state = AppState(items: [],notes: []);
   final loadItems = _loadFromPrefs(state);
   final saveItems = _saveToPrefs(state);
 

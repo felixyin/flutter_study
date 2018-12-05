@@ -36,21 +36,63 @@ class Item {
   }
 }
 
-class AppState {
-  AppState({@required this.items});
+class Note {
+  final int id;
+  final String title;
+  final String content;
+  final DateTime lastTime;
 
-  AppState.fromJson(Map json)
-      : items = (json['items'] as List).map((itemJson) => Item.fromJson(itemJson)).toList();
+  Note({
+    this.id,
+    this.title,
+    this.content,
+    this.lastTime,
+  });
 
-// 实例化一个不可变的list
-  AppState.initState() : items = List.unmodifiable(<Item>[]);
+  Note copyWith({int id, String title, String content, DateTime lastTime}) {
+    return Note(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        content: content ?? this.content,
+        lastTime: lastTime ?? this.lastTime);
+  }
 
-  final List<Item> items;
+  Note.fromJson(Map json)
+      : id = json['id'],
+        title = json['title'],
+        content = json['content'],
+        lastTime = json['lastTime'];
 
-  Map toJson() => {'items': items};
+  Map toJson() => {id: id, title: title, content: content, lastTime: lastTime};
 
   @override
   String toString() {
     return toJson().toString();
   }
+}
+
+class AppState {
+  AppState({
+    @required this.items,
+    @required this.notes,
+  });
+
+  AppState.fromJson(Map json)
+      : items = (json['items'] as List).map((itemJson) => Item.fromJson(itemJson)).toList(),
+        notes = (json['notes'] as List).map((noteJson) => Note.fromJson(noteJson)).toList();
+
+// 实例化一个不可变的list
+  AppState.initState()
+      : items = List.unmodifiable(<Item>[]),
+        notes = List.unmodifiable(<Note>[]);
+
+  final List<Item> items;
+  final List<Note> notes;
+
+  @override
+  String toString() {
+    return toJson().toString();
+  }
+
+  Map toJson() => {'items': items, 'notes': notes};
 }
