@@ -30,8 +30,10 @@ class RemoveItemsAction {}
 class GetItemsAction {}
 
 class LoadedItemsAction {
-  LoadedItemsAction(this.items);
-
+  LoadedItemsAction(this.items) {
+    // 初始化子增长id，防止id重新从0开始后数据添加出现重复id
+    AddItemAction._id = this.items == null ? 0 : this.items.last.id;
+  }
   final List<Item> items;
 }
 

@@ -8,10 +8,9 @@ import 'dart:convert';
 List<Middleware<AppState>> appStateMiddleware([
   AppState state,
 ]) {
-  state = AppState(items: [],notes: []);
+  state = AppState(items: []/*,notes: []*/ );
   final loadItems = _loadFromPrefs(state);
   final saveItems = _saveToPrefs(state);
-
   return [
     TypedMiddleware<AppState, AddItemAction>(saveItems),
     TypedMiddleware<AppState, RemoveItemAction>(saveItems),
@@ -26,6 +25,7 @@ Middleware<AppState> _loadFromPrefs(AppState state) {
     next(action);
 
     loadFromPrefs().then((state) {
+      
       store.dispatch(LoadedItemsAction(state.items));
     });
 
@@ -48,6 +48,7 @@ void saveToPrefs(AppState state) async {
 
 Future<AppState> loadFromPrefs() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
+  // 清理已经保存的，但确是错误的那一部分数据
   // preferences.remove('itemsState');
   // return;
   var string = preferences.getString('itemsState');

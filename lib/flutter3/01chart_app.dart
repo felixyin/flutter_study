@@ -147,6 +147,7 @@ class ChatWin extends State<ChatApp> with TickerProviderStateMixin {
   }
 }
 
+/// 一行消息
 class MsgRow extends StatelessWidget {
   const MsgRow({
     Key key,
